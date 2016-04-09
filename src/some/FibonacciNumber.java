@@ -33,6 +33,7 @@ public class FibonacciNumber {
     }
 
     public static void main(String[] args){
+
         int N = 10;
         int num = 9;
         FibonacciNumber fibonacciNumber = new FibonacciNumber(N);
