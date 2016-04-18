@@ -85,6 +85,11 @@ public class ChainMatrixMultiplied {
     public void ChainMatrixDP(){
         for(int i = 1; i <= N; i++)
             m[i][i] = 0;
+        /**
+         * 总共有三层循环,因此它的时间复杂度度为O（N^3)
+         * 空间复杂度为O(N^2)
+         * 其中N为矩阵链中矩阵的个数.
+         */
         for(int l = 2; l <= N; l++)
             for(int i = 1; i <= N - l + 1; i++){
                 int j = i + l - 1;
