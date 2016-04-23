@@ -1,5 +1,7 @@
 package some;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -25,19 +27,35 @@ import java.util.Scanner;
  */
 public class LuckyNum {
 
-    public void soluation(){
+    public void soluation() throws FileNotFoundException {
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(new FileInputStream("/home/sghipr/luckyNum"));
         while(scanner.hasNext()){
             int a = scanner.nextInt();
             int b = scanner.nextInt();
             if(a <= b)
                 System.out.println(b);
             else {
-
-
+                int result = getValue(a,b);
+                System.out.println(result);
             }
         }
+        scanner.close();
+    }
+
+
+    public boolean match(char[] a,char[] b){
+
+        int i = a.length - 1;
+        int j = b.length - 1;
+        while(i >= 0 && j >= 0){
+            if(a[i] == b[j])
+                j--;
+            i--;
+        }
+        if(j < 0)
+            return true;
+        return false;
 
     }
 
@@ -48,24 +66,52 @@ public class LuckyNum {
         StringBuilder result = new StringBuilder();
         int i = aStr.length - 1;
         int j = bStr.length - 1;
-        while(i >= 0 && j >= 0 && aStr.length - i <= bStr.length){
-            if(aStr[i] <= bStr[j])
-                j--;
+
+        /**
+         * 首先判断a中是否包含有b，如果包含，則直接返回a.
+         */
+        if(match(aStr,bStr))
+            return a;
+
+        //注意,i,j一定是指向的是完全匹配时的高一位的数字.
+        while(i >= 0 && j >= 0){
+            if(aStr[i] <= bStr[j]) {
+                if(i == aStr.length - bStr.length && aStr[i] < bStr[0])
+                    j = -1;
+                else
+                    j--;
+            }
             i--;
         }
 
-        if(i * j <= 0){
-            result.append(bStr[0]);
-            for(int k = 0; k < aStr.length - bStr.length + 1; k++){
-                result.append(0);
-            }
-            for(int k = bStr.length - 1; k > 0 ; k++){
-                result.append(bStr[k]);
-            }
+        int k = 0;
+        //如果i >= 0时，則将最高位等一系列的结果按原先的结果存入到数组中.
+        for(; k <= i; k++){
+            result.append(aStr[k]);
         }
-        else{
+        //第i + 1 位一定是存储的是bStr[0]
+        result.append(bStr[0]);
+        if(i < 0)
+            k = 0;
+        else
+            k++;
 
+        //最高位确定之后的结果到最后bStr.length - 1的结果都是0.
+        for(;k < aStr.length - bStr.length + 1; k++){
+            result.append(0);
         }
+
+        for(k = 1; k < bStr.length; k++)
+            result.append(bStr[k]);
+
+        return Integer.parseInt(result.toString());
     }
+
+    public static void main(String[] args) throws FileNotFoundException {
+
+        LuckyNum luckyNum = new LuckyNum();
+        luckyNum.soluation();
+    }
+
 
 }
