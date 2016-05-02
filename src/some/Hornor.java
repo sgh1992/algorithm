@@ -40,9 +40,6 @@ public class Hornor {
         sum += (coefficient[index] + ary * compute(index - 1,sum));
         return sum;
     }
-
-
-
     public static void main(String[] args){
         int[] coefficient = {1,2,3,0,9};
         int ary = 10;
@@ -51,6 +48,5 @@ public class Hornor {
 
         String string = null;
         string.hashCode();
-
     }
 }
